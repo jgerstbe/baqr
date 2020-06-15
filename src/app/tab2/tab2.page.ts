@@ -31,22 +31,26 @@ export class Tab2Page implements OnInit {
   async loadVcards() {       
     await this.loading.present();
     this.vCards = this.storage.getItems();
-    this.vCards.forEach((e, index) => {
-      let vCard = vCardsJS();
-      Object.keys(e.vCard).forEach(k => {
-        vCard[k] = e.vCard[k];
-      });
-      QRCode.toDataURL(vCard.getFormattedString(), (error, string) => {  
-        if (error) {
-          console.error(error);
-          return;
-        }
-        this.vCards[index].qrSrc = string;   
-        if (index === this.vCards.length-1) {
-          this.loading.dismiss();
-        }
-      });
-    });
+    if (this.vCards.length === 0) {
+      this.loading.dismiss();
+    } else {
+      this.vCards.forEach((e, index) => {
+        let vCard = vCardsJS();
+        Object.keys(e.vCard).forEach(k => {
+          vCard[k] = e.vCard[k];
+        });
+        QRCode.toDataURL(vCard.getFormattedString(), (error, string) => {  
+          if (error) {
+            console.error(error);
+            return;
+          }
+          this.vCards[index].qrSrc = string;   
+          if (index === this.vCards.length-1) {
+            this.loading.dismiss();
+          }
+        });
+      }); 
+    } 
   }
 
   // downloadJS(string, 'vcard-qr.png', 'image/png')
