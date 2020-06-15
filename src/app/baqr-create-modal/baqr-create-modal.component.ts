@@ -22,5 +22,6 @@ export class BaqrCreateModalComponent {
 
   save() {
     this.storage.saveVcard(this.vCard);
+    this.modalController.dismiss();
   }
 }
