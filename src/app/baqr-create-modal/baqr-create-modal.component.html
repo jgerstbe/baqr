@@ -1,0 +1,73 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-title>
+      Create new baQR-Code!
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <!-- iOS header -->
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title>Create new baQR-Code!</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <ion-list>
+    <ion-item>
+      <ion-label position="floating">Firstname</ion-label>
+      <ion-input (ionChange)="vCard.firstName = $event.detail.value = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-item class="w-100">
+      <ion-label position="floating">Lastname</ion-label>
+      <ion-input (ionChange)="vCard.lastName = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Phone</ion-label>
+      <ion-input (ionChange)="vCard.homePhone = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">E-Mail</ion-label>
+      <ion-input (ionChange)="vCard.email = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-list-header>
+      <ion-label>Address</ion-label>
+    </ion-list-header>
+    <ion-item>
+      <ion-label position="floating">Street & house number</ion-label>
+      <ion-input (ionChange)="vCard.homeAddress.street = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">City</ion-label>
+      <ion-input (ionChange)="vCard.homeAddress.city = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">ZIP</ion-label>
+      <ion-input (ionChange)="vCard.homeAddress.postalCode = $event.detail.value"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label position="floating">Country</ion-label>
+      <ion-input (ionChange)="vCard.homeAddress.countryRegion = $event.detail.value"></ion-input>
+    </ion-item>
+    <!-- <ion-item>
+      <ion-label position="stacked">Address</ion-label>
+      <ion-input placeholder="Address Line 1 = $event.detail.value"></ion-input>
+      <ion-input placeholder="Address Line 2 = $event.detail.value"></ion-input>
+      <ion-input placeholder="City = $event.detail.value"></ion-input>
+      <ion-input placeholder="State = $event.detail.value"></ion-input>
+      <ion-input placeholder="Zip Code = $event.detail.value"></ion-input>
+    </ion-item> -->
+  </ion-list>
+  <div style="margin: 10px 20px;">    
+    <ion-button (click)="modalController.dismiss()" fill="outline" color="danger">         
+      <ion-icon slot="start" name="arrow-back-outline"></ion-icon>
+      Cancel
+    </ion-button>
+    <ion-button (click)="save()" color="success">       
+      <ion-icon slot="start" name="save-outline"></ion-icon>
+      Save
+    </ion-button>
+  </div>
+  <br>
+  <canvas id="qrCanvas"></canvas>
+</ion-content>
