@@ -15,14 +15,6 @@
   </ion-header>
 
   <ion-grid>
-    <ion-row>
-      <ion-col>
-        <ion-button (click)="presentModal()" expand="block">         
-          <ion-icon slot="start" name="add-outline"></ion-icon>
-          New
-        </ion-button>
-      </ion-col>
-    </ion-row>
     <ion-row *ngFor="let data of vCards">
       <ion-card style="width:100%;">
         <ion-card-header>
@@ -34,6 +26,26 @@
         </ion-card-content>
       </ion-card>
     </ion-row>
+    <!-- empty list -->
+    <ion-row *ngIf="vCards && vCards.length === 0">
+      <ion-card style="width:100%;">
+        <ion-card-header>
+          <ion-card-title>Welcome to baQR!</ion-card-title>
+        </ion-card-header>      
+        <ion-card-content>
+          <p>You can read more about <a>baQR</a> or start using it by creating your first baQR-Code.</p>
+          <div style="text-align: center;">
+            <ion-button color="success" fill="outline" (click)="presentActionSheet()">Start</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ion-row>
   </ion-grid>
+
+  <ion-fab vertical="bottom" horizontal="end" edge slot="fixed" style="margin-bottom: 50px;">
+    <ion-fab-button (click)="presentActionSheet()">
+      <ion-icon name="add-outline"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

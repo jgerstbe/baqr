@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ToastController, ModalController, LoadingController } from '@ionic/angular';
+import { AlertController, ActionSheetController, ToastController, ModalController, LoadingController } from '@ionic/angular';
 import * as QRCode from 'qrcode';
 import * as vCardsJS from '../../assets/vcards-js';
 import * as downloadJS from 'downloadjs';
@@ -17,6 +17,7 @@ export class Tab2Page implements OnInit {
 
   constructor(
     public alertController: AlertController,
+    public actionSheetController: ActionSheetController,
     public toastController: ToastController,
     public modalController: ModalController,
     public storage: StorageService,
@@ -75,13 +76,42 @@ export class Tab2Page implements OnInit {
     toast.present();
   }
   
-  async presentModal() {
+  async presentModal(mode: string) {
     const modal = await this.modalController.create({
       component: BaqrCreateModalComponent,
-      cssClass: 'my-custom-class'
+      componentProps: {
+        'mode': mode
+      }
     });
     modal.onDidDismiss().then(() => this.loadVcards());
     return await modal.present();
+  }
+
+  async presentActionSheet() {
+    const actionSheet = await this.actionSheetController.create({
+      header: 'Create a new baQR-Code.',
+      buttons: [{
+        text: 'Cloud link (self-updating).',
+        icon: 'cloudy-outline',
+        handler: () => {
+          this.presentModal('online');
+        }
+      }, {
+        text: 'Offline vCard (self-contained).',
+        icon: 'cloud-offline-outline',
+        handler: () => {
+          this.presentModal('offline');
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          actionSheet.dismiss();
+        }
+      }]
+    });
+    await actionSheet.present();
   }
 
 }
