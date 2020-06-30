@@ -16,15 +16,24 @@
 
   <ion-grid>
     <ion-row *ngFor="let data of vCards">
-      <ion-card style="width:100%;">
-        <ion-card-header>
-          <ion-card-subtitle>{{data.timestamp | date: 'dd.MM.yy - HH:mm' }}</ion-card-subtitle>
-          <ion-card-title>{{ data.vCard.lastName }}{{data.vCard.lastName ? ', ': ''}}{{data.vCard.firstName}}</ion-card-title>
-        </ion-card-header>      
-        <ion-card-content>
-          <img [src]="data.qrSrc" alt="baQR-Code" width="100%">
-        </ion-card-content>
-      </ion-card>
+      <ion-col size="12" sizeMd="4" >
+        <ion-card>
+          <ion-card-header>
+            <ion-row>
+              <ion-col size="10">
+                <ion-card-subtitle>{{data.timestamp | date: 'dd.MM.yy - HH:mm' }}</ion-card-subtitle>
+                <ion-card-title>{{ data.vCard.lastName }}{{data.vCard.lastName ? ', ': ''}}{{data.vCard.firstName}}</ion-card-title>
+              </ion-col>
+              <ion-col size="2">
+                <ion-icon (click)="presentMenuSheet(data)" name="settings-outline" style="font-size: x-large; float:right;"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-card-header>      
+          <ion-card-content>
+            <img [src]="data.qrSrc" alt="baQR-Code" width="100%">
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
     </ion-row>
     <!-- empty list -->
     <ion-row *ngIf="vCards && vCards.length === 0">

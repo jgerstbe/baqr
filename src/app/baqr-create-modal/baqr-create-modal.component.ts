@@ -11,6 +11,8 @@ import { StorageService } from '../storage/storage.service';
 })
 export class BaqrCreateModalComponent {
   @Input() mode: string;
+  @Input() data: any;
+  create: boolean = true;
   vCard = vCardsJS();
 
   constructor(
@@ -19,6 +21,14 @@ export class BaqrCreateModalComponent {
     public storage: StorageService,
   ) { 
     this.vCard.version = '3.0';
+  }
+
+  ngOnInit() {
+    console.log('INIT', this.data);
+    if (this.data) {
+      this.create = false;
+      this.vCard = this.data.vCard;
+    }
   }
 
   save() {

@@ -76,11 +76,12 @@ export class Tab2Page implements OnInit {
     toast.present();
   }
   
-  async presentModal(mode: string) {
+  async presentCreateModal(mode: string, baqr?:any) {
     const modal = await this.modalController.create({
       component: BaqrCreateModalComponent,
       componentProps: {
-        'mode': mode
+        'mode': mode,
+        'data': baqr
       }
     });
     modal.onDidDismiss().then(() => this.loadVcards());
@@ -94,13 +95,44 @@ export class Tab2Page implements OnInit {
         text: 'Cloud link (self-updating).',
         icon: 'cloudy-outline',
         handler: () => {
-          this.presentModal('online');
+          this.presentCreateModal('online');
         }
       }, {
         text: 'Offline vCard (self-contained).',
         icon: 'cloud-offline-outline',
         handler: () => {
-          this.presentModal('offline');
+          this.presentCreateModal('offline');
+        }
+      }, {
+        text: 'Cancel',
+        icon: 'close',
+        role: 'cancel',
+        handler: () => {
+          actionSheet.dismiss();
+        }
+      }]
+    });
+    await actionSheet.present();
+  }
+
+  async presentMenuSheet(baqr:any) {
+    const actionSheet = await this.actionSheetController.create({
+      header: `${baqr.vCard.firstName} ${baqr.vCard.lastName}`,
+      buttons: [{
+        text: 'Delete',
+        role: 'destructive',
+        handler: () => {
+          console.log('Delete clicked');
+        }
+      }, {
+        text: 'Edit',
+        handler: () => {
+          this.presentCreateModal('offline', baqr);
+        }
+      }, {
+        text: 'Print',
+        handler: () => {
+          console.log('Print.');
         }
       }, {
         text: 'Cancel',
