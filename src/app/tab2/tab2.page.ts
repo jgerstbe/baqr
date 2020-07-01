@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AlertController, ActionSheetController, ToastController, ModalController, LoadingController } from '@ionic/angular';
 import * as QRCode from 'qrcode';
 import * as vCardsJS from '../../assets/vcards-js';
-import * as downloadJS from 'downloadjs';
 import { BaqrCreateModalComponent } from '../baqr-create-modal/baqr-create-modal.component';
 import { StorageService } from '../storage/storage.service';
+import { baQR } from '../storage/baqr';
 
 @Component({
   selector: 'app-tab2',
@@ -25,6 +25,10 @@ export class Tab2Page implements OnInit {
   ) { }
 
   async ngOnInit() {
+    this.reload();
+  }
+
+  async reload() {
     this.loading = await this.loadingCtrl.create({});
     this.loadVcards();
   }
@@ -58,7 +62,6 @@ export class Tab2Page implements OnInit {
 
   async presentAlert(text:string) {
     const alert = await this.alertController.create({
-      cssClass: 'my-custom-class',
       header: 'Alert',
       subHeader: null,
       message: text,
@@ -89,40 +92,42 @@ export class Tab2Page implements OnInit {
   }
 
   async presentActionSheet() {
-    const actionSheet = await this.actionSheetController.create({
-      header: 'Create a new baQR-Code.',
-      buttons: [{
-        text: 'Cloud link (self-updating).',
-        icon: 'cloudy-outline',
-        handler: () => {
-          this.presentCreateModal('online');
-        }
-      }, {
-        text: 'Offline vCard (self-contained).',
-        icon: 'cloud-offline-outline',
-        handler: () => {
-          this.presentCreateModal('offline');
-        }
-      }, {
-        text: 'Cancel',
-        icon: 'close',
-        role: 'cancel',
-        handler: () => {
-          actionSheet.dismiss();
-        }
-      }]
-    });
-    await actionSheet.present();
+    this.presentCreateModal('offline');
+    // const actionSheet = await this.actionSheetController.create({
+    //   header: 'Create a new baQR-Code.',
+    //   buttons: [{
+    //     text: 'Cloud link (self-updating).',
+    //     icon: 'cloudy-outline',
+    //     handler: () => {
+    //       this.presentCreateModal('online');
+    //     }
+    //   }, {
+    //     text: 'Offline vCard (self-contained).',
+    //     icon: 'cloud-offline-outline',
+    //     handler: () => {
+    //       this.presentCreateModal('offline');
+    //     }
+    //   }, {
+    //     text: 'Cancel',
+    //     icon: 'close',
+    //     role: 'cancel',
+    //     handler: () => {
+    //       actionSheet.dismiss();
+    //     }
+    //   }]
+    // });
+    // await actionSheet.present();
   }
 
-  async presentMenuSheet(baqr:any) {
+  async presentMenuSheet(baqr:baQR) {
     const actionSheet = await this.actionSheetController.create({
       header: `${baqr.vCard.firstName} ${baqr.vCard.lastName}`,
       buttons: [{
         text: 'Delete',
         role: 'destructive',
         handler: () => {
-          console.log('Delete clicked');
+          this.storage.delete(baqr.uuid);
+          this.reload();
         }
       }, {
         text: 'Edit',

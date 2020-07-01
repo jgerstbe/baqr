@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 import { ModalController, ToastController } from '@ionic/angular';
 import * as vCardsJS from '../../assets/vcards-js';
-import * as QRCode from 'qrcode';
 import { StorageService } from '../storage/storage.service';
+import { baQR } from '../storage/baqr';
 
 @Component({
   selector: 'app-baqr-create-modal',
@@ -11,7 +11,7 @@ import { StorageService } from '../storage/storage.service';
 })
 export class BaqrCreateModalComponent {
   @Input() mode: string;
-  @Input() data: any;
+  @Input() data: baQR;
   create: boolean = true;
   vCard = vCardsJS();
 
@@ -24,7 +24,6 @@ export class BaqrCreateModalComponent {
   }
 
   ngOnInit() {
-    console.log('INIT', this.data);
     if (this.data) {
       this.create = false;
       this.vCard = this.data.vCard;
@@ -32,9 +31,11 @@ export class BaqrCreateModalComponent {
   }
 
   save() {
-    if (this.mode === 'offline') {
-      this.storage.saveVcard(this.vCard);
-      this.modalController.dismiss();
+    if (this.create) {
+      this.storage.save(this.vCard);
+    } else {
+      this.storage.update(new baQR(this.vCard, this.data.uuid));
     }
+    this.modalController.dismiss();
   }
 }

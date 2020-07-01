@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { v4 as uuidv4 } from 'uuid';
+import { baQR } from './baqr';
 
 @Injectable({
   providedIn: 'root'
@@ -8,37 +8,34 @@ export class StorageService {
 
   constructor() { }
 
-  saveVcard(vCard:any) {
+  save(vCard:any) {
     if (!vCard) {
-      console.error('saveVcard - missing data.')
+      console.error('save - missing data.')
       return;
     }
     const items = this.getItems();
-    items.push(this.mkCard(vCard));
+    items.push(new baQR(vCard));
     this.setItems(items);
   }
 
-  updateVcard(vCard:string, uuid:string) {
-    if (!vCard || !uuid) {
+  update(baqr:baQR) {
+    if (!baqr || !baqr.uuid) {
       console.error('updateVcard - missing data.')
       return;
     }
     const items = this.getItems();
-    const index = items.findIndex(e => e.uiild === uuid);
-    items[index] = this.mkCard(vCard);
+    const index = items.findIndex(e => e.uuid === baqr.uuid);
+    items[index] = new baQR(baqr.vCard, baqr.uuid);
     this.setItems(items);
   }
 
-  deleteVcard(uuid:string):void {
-    const items = localStorage.getItem('bq-qr-storage') || [];
-    localStorage.removeItem(uuid);
-  }
-
-  mkCard(vCard:string, uuid?:string) {
-    return {
-      uuid: uuid || uuidv4(),
-      vCard: vCard,
-      timestamp: new Date().getTime()
+  delete(uuid:string):void {
+    let items:any = localStorage.getItem('bq-qr-storage');
+    if (items) {
+      items = JSON.parse(items);
+      const index = items.findIndex(e => e.uuid === uuid);
+      items.splice(index, 1)
+      this.setItems(items);
     }
   }
 
