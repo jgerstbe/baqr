@@ -8,8 +8,8 @@ baQR was born after playing around with QR codes and them displaying contact inf
 - [X] create baQR
 - [X] scan baQR/qr-code
 - [X] locally save baQR
-- [ ] edit baQR
-- [ ] delete baQR
+- [X] edit baQR
+- [X] delete baQR
 - [ ] adhesive print template
 - [ ] baQR-code type 2 - "self-updating"
 - [ ] read only link page for a single baQR-code
