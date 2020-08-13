@@ -1,3 +1,5 @@
+![baQr logo](https://i.ibb.co/JjqSycT/baQR.png)
+
 # baqr
 baQR is a modern take on luggage tags - your home address information as an adhesive address label, perfect for travel lugagge.
 
