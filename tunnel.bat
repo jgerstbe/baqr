@@ -1,1 +1,0 @@
-ssh -o "ServerAliveInterval 30" -o "ServerAliveCountMax 3" -N -R 1337:127.0.0.1:8100 root@jgeb.ddns.net
